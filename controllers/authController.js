@@ -23,6 +23,13 @@ const sendTokenResponse = (res, user, statusCode) => {
 
 //SIGNUP
 exports.signUp = asyncHandler(async (req, res, next) => {
+
+  const emailAlreadyExists = await User.findOne({ email: req.body.email });
+
+  if (emailAlreadyExists) {
+    return next(new AppError('Email already exists', 400));
+  }
+
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,

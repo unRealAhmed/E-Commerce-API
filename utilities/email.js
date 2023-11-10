@@ -8,7 +8,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = 'JopsHub Team <ahmed@JobsHub.io>';
+    this.from = 'E-Commerce Team <ahmed@ECommerce.io>';
   }
 
   // Send an email with specified subject and message
@@ -25,8 +25,9 @@ module.exports = class Email {
   }
 
   async sendWelcomeEmail() {
-    const subject = 'Welcome To JopsHub Family 🚀';
-    const message = `Welcome, ${this.firstName}! 🎉 We're excited to have you as part of the Jops community. Get ready to explore job opportunities, connect with amazing companies, and build your career. Let's make your job search journey a success together! 🌟`;
+    const subject = 'Welcome To E-Commerce Family 🚀';
+    const message = `Welcome, ${this.firstName}! 🎉 We're thrilled to have you as part of our E-Commerce community. Get ready to discover exciting products, exclusive offers, and a delightful shopping experience. Let's make your shopping journey a success together! 🌟`;
+
     await this.send(subject, message);
   }
 
