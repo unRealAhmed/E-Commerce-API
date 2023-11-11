@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide a password'],
     minlength: [6, 'Password must be at least 6 characters long'],
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -35,6 +36,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['admin', 'user'],
     default: 'user',
+  },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false, // Hide active field from query results
   },
 });
 
