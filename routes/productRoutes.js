@@ -1,14 +1,19 @@
 const express = require('express');
-
-const router = express.Router();
 const { protect, restrictTo } = require('../controllers/authController');
+const reviewRouter = require('./reviewRoutes');
 const {
   createProduct,
   getAllProducts,
   getProduct,
   updateProduct,
   deleteProduct,
+  uploadProductImage,
+  resizeProductImage
 } = require('../controllers/productController');
+
+const router = express.Router();
+// Route for handling reviews associated with a product
+router.use('/:productId/reviews', reviewRouter);
 
 // Public routes
 router.get('/', getAllProducts);
@@ -21,7 +26,7 @@ router.post('/', createProduct);
 
 router
   .route('/:id')
-  .patch(updateProduct)
+  .patch(uploadProductImage, resizeProductImage, updateProduct)
   .delete(deleteProduct);
 
 module.exports = router;

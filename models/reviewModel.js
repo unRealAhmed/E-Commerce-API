@@ -34,6 +34,20 @@ const reviewSchema = mongoose.Schema(
 
 reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
+// Virtual populate
+reviewSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'user',
+    select: 'name'
+  });
+  next();
+})
+
+reviewSchema.pre(/^find/, function (next) {
+  this.select('-updatedAt')
+  next()
+})
+
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review
