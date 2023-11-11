@@ -11,7 +11,7 @@ module.exports = class APIFeatures {
 
     // Include the search functionality
     if (queryObj.search) {
-      queryObj.position = { $regex: queryObj.search, $options: 'i' };
+      queryObj.name = { $regex: queryObj.search, $options: 'i' };
       delete queryObj.search; // Remove the original search parameter
     }
 

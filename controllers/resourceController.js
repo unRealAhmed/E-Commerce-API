@@ -52,6 +52,7 @@ exports.getOne = (Model) =>
 // This factory function generates a middleware for handling generic "create one" requests for any resource
 exports.createOne = Model =>
   asyncHandler(async (req, res, next) => {
+    req.body.user = req.user.id
     // 1. Create a new document using the request body
     const doc = await Model.create(req.body);
 
