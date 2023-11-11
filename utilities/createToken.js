@@ -11,11 +11,12 @@ const createToken = (res, id) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    signed: true,
     sameSite: "strict",
-    maxAge: 90 * 24 * 60 * 60 * 1000, // Maximum age of the cookie (90 days)
+    maxAge: 1000 * 60 * 60 * 24, // Maximum age of the cookie (one day)
   };
 
-  res.cookie("jwt", token, cookieOptions);
+  res.cookie("token", token, cookieOptions);
 
   return token;
 };

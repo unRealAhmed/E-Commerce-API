@@ -22,7 +22,7 @@ const sendTokenResponse = (res, user, statusCode) => {
 };
 
 //SIGNUP
-exports.signUp = asyncHandler(async (req, res, next) => {
+exports.signup = asyncHandler(async (req, res, next) => {
 
   const emailAlreadyExists = await User.findOne({ email: req.body.email });
 
@@ -86,7 +86,7 @@ exports.logout = (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",
     sameSite: "strict",
-    maxAge: new Date(Date.now() + 10 * 1000), // Set the cookie to expire in 10 seconds
+    maxAge: new Date(Date.now() + 5 * 1000), // Set the cookie to expire in 5 seconds
   });
 
   res.status(200).json({ status: "success", message: 'You have been logged out.' });
@@ -215,11 +215,17 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
 //UPDATE PASSWORD
 exports.updatePassword = asyncHandler(async (req, res, next) => {
+
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    return next(new AppError('Please provide both values', 400))
+  }
+
   // 1) Find the user by ID and select the password field
   const user = await User.findById(req.user._id).select("+password");
   // 2) Check if the entered current password is correct
   const isPasswordCorrect = await user.passwordMatching(
-    req.body.currentPassword,
+    oldPassword,
     user.password
   );
 
@@ -227,7 +233,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     return next(new AppError("Your current password is incorrect", 401));
   }
   // 3) Update the user's password with the new one and save the changes
-  user.password = req.body.password;
+  user.password = req.body.newPassword;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
 

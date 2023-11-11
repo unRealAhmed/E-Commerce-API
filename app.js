@@ -17,6 +17,7 @@ const connectDatabase = require("./utilities/dataBase");
 const userRouter = require('./routes/userRoutes');
 
 
+
 // Initialize Express app
 const app = express();
 const port = process.env.PORT || 8000;
@@ -30,7 +31,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Parse cookies, enable CORS, and handle JSON parsing
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_SECRET_KEY));
 app.use(cors());
 app.options("*", cors());
 app.use(express.json());
