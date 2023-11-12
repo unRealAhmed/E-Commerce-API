@@ -2,4 +2,3 @@ node_modules/
 DevData/
 config.env
 .env
-public/
