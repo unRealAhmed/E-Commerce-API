@@ -7,9 +7,9 @@ const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const xss = require("xss-clean");
-// const hpp = require("hpp");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
+const hpp = require('hpp');
 
 // Import controllers and utility functions
 const errorController = require('./controllers/errorController');
@@ -37,22 +37,13 @@ app.use(cors());
 app.options("*", cors());
 app.use(express.json());
 app.use(express.json({ limit: '100kb' }));
+app.use(hpp())
 
 // Enhance security with various middleware
 app.use(helmet()); // Set various HTTP headers for security
 app.use(mongoSanitize()); // Sanitize data against NoSQL injection attacks
 app.use(xss()); // Prevent XSS attacks
-// app.use(
-//   hpp({
-//     whitelist: [
-//       "company",
-//       "status",
-//       "position",
-//       "createdBy",
-//       "createdAt",
-//     ],
-//   })
-// );
+app.use(express.static('./public'));
 
 // Define routes for jobs and users, protecting job routes with authentication
 app.use('/api/v1/users', userRouter);
