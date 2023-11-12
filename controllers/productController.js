@@ -4,13 +4,36 @@ const asyncHandler = require('../utilities/asyncHandler');
 const AppError = require('../utilities/appErrors');
 const resourceController = require('./resourceController');
 const Product = require('../models/productModel');
+const Review = require('../models/reviewModel');
 
 // Resource Controllers
 exports.getAllProducts = resourceController.getAll(Product);
 exports.getProduct = resourceController.getOne(Product);
 exports.createProduct = resourceController.createOne(Product);
 exports.updateProduct = resourceController.updateOne(Product);
-exports.deleteProduct = resourceController.deleteOne(Product);
+
+exports.deleteProduct = asyncHandler(async (req, res, next) => {
+  const productId = req.params.id;
+
+  // Find the product by ID
+  const product = await Product.findById(productId);
+
+  // Check if the product exists
+  if (!product) {
+    return next(new AppError('Product not found', 404));
+  }
+
+  // Delete all reviews associated with the product
+  await Review.deleteMany({ product: productId });
+
+  // Delete the product
+  await Product.deleteOne({ _id: productId });
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 
 // Multer Configuration
 const multerStorage = multer.memoryStorage();
