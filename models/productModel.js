@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Define the product schema
 const productSchema = new mongoose.Schema(
   {
     name: {
@@ -55,6 +56,7 @@ const productSchema = new mongoose.Schema(
     averageRating: {
       type: Number,
       default: 0,
+      set: (val) => +val.toFixed(1),
     },
     numOfReviews: {
       type: Number,
@@ -69,6 +71,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+// Create a virtual field for reviews associated with the product
 productSchema.virtual('reviews', {
   ref: 'Review',
   localField: '_id',
@@ -76,21 +79,19 @@ productSchema.virtual('reviews', {
   justOne: false,
 });
 
-productSchema.pre(/^findOne/, function () {
-  this.populate({
-    path: 'user',
-    select: 'name'
-  })
-})
-
+// Pre middleware to populate user and reviews fields
 productSchema.pre(/^findOne/, function (next) {
   this.populate({
+    path: 'user',
+    select: '-__v',
+  }).populate({
     path: 'reviews',
-    select: 'rating comment'
-  })
+    select: '-__v',
+  }).select('-__v');
   next();
 });
 
-const Product = mongoose.model('Product', productSchema)
+// Create the Product model
+const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product
+module.exports = Product;
