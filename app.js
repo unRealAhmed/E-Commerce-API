@@ -17,6 +17,7 @@ const connectDatabase = require("./utilities/dataBase");
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const OrderRouter = require('./routes/orderRoutes');
 
 // Initialize Express app
 const app = express();
@@ -57,6 +58,7 @@ app.use(xss()); // Prevent XSS attacks
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/orders', OrderRouter);
 
 // Connect to the database
 connectDatabase();
