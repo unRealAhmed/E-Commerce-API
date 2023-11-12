@@ -8,7 +8,7 @@ exports.setReviewUserIds = (req, res, next) => {
   if (!req.body.user) req.body.user = req.user.id;
   next();
 };
-
+//
 exports.getAllReviews = getAll(Review)
 exports.getReview = getOne(Review);
 exports.updateReview = updateOne(Review);

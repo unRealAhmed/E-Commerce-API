@@ -2,12 +2,12 @@ module.exports = class APIFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = JSON.parse(JSON.stringify(queryString));
-    this.excludedFields = ['page', 'sort', 'limit', 'fields']; // Fields to exclude from filtering
+    this.excludedFields = ['page', 'sort', 'limit', 'fields', 'search']; // Include 'search' in excludedFields
   }
 
   // Filter the query based on query parameters
   filter() {
-    const queryObj = JSON.parse(JSON.stringify(this.queryString));
+    const queryObj = { ...this.queryString }; // Use object spread for clarity
 
     // Include the search functionality
     if (queryObj.search) {
@@ -37,17 +37,22 @@ module.exports = class APIFeatures {
       let sortFields;
 
       // Add custom sorting options
-      if (sort === 'latest') {
-        sortFields = '-createdAt';
-      } else if (sort === 'oldest') {
-        sortFields = 'createdAt';
-      } else if (sort === 'a-z') {
-        sortFields = 'position';
-      } else if (sort === 'z-a') {
-        sortFields = '-position';
-      } else {
-        // Default sorting by createdAt
-        sortFields = 'createdAt';
+      switch (sort) {
+        case 'latest':
+          sortFields = '-createdAt';
+          break;
+        case 'oldest':
+          sortFields = 'createdAt';
+          break;
+        case 'a-z':
+          sortFields = 'position';
+          break;
+        case 'z-a':
+          sortFields = '-position';
+          break;
+        default:
+          // Default sorting by createdAt
+          sortFields = 'createdAt';
       }
 
       this.query.sort(sortFields);
@@ -58,7 +63,6 @@ module.exports = class APIFeatures {
 
     return this;
   }
-
 
   // Paginate the results based on the page and limit parameters
   paginate() {

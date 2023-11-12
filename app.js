@@ -31,18 +31,20 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Enhance security with various middleware
+app.use(helmet()); // Set various HTTP headers for security
+app.use(mongoSanitize()); // Sanitize data against NoSQL injection attacks
+app.use(xss()); // Prevent XSS attacks
+app.use(hpp());
+
 // Parse cookies, enable CORS, and handle JSON parsing
 app.use(cookieParser(process.env.JWT_SECRET_KEY));
 app.use(cors());
 app.options("*", cors());
 app.use(express.json());
 app.use(express.json({ limit: '100kb' }));
-app.use(hpp())
 
-// Enhance security with various middleware
-app.use(helmet()); // Set various HTTP headers for security
-app.use(mongoSanitize()); // Sanitize data against NoSQL injection attacks
-app.use(xss()); // Prevent XSS attacks
+// Serve static files
 app.use(express.static('./public'));
 
 // Define routes for jobs and users, protecting job routes with authentication
