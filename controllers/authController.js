@@ -7,7 +7,7 @@ const User = require('../models/userModel');
 const createToken = require('../utilities/createToken');
 const AppError = require('../utilities/appErrors');
 const Email = require('../utilities/email');
-
+const { resetHtmlTemplate } = require('../utilities/resetPasswordTemplate')
 
 // Helper function to send JWT token as a response
 const sendTokenResponse = (res, user, statusCode) => {
@@ -150,25 +150,16 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
 
   // 3) Construct the reset URL and email it to the user
   const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-  const message = `Dear valued customer,
-
-  Did you request to reset your password on our E-Commerce platform? No problem! Click the link below to securely reset your password and continue your seamless shopping experience:
-
-  ${resetURL}
-  
-  If you didn't initiate this request, please ignore this email. We take the security of your account seriously.
-
-  Happy shopping!
-  
-  Best regards,
-  [Your E-Commerce Brand] 🛍️`;
-  ;
-
+  const html = resetHtmlTemplate(
+    req.protocol,
+    req.headers.host,
+    resetToken,
+  );
   // Send the password reset email
   const email = new Email(user, resetURL);
 
   try {
-    await email.sendPasswordResetEmail(message);
+    await email.sendPasswordResetEmail(html);
 
     res.status(200).json({
       status: 'success',
