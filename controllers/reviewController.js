@@ -3,17 +3,17 @@ const { getAll, getOne, updateOne, deleteOne } = require("./resourceController")
 const asyncHandler = require("../utilities/asyncHandler");
 const AppError = require("../utilities/appErrors");
 
-exports.setReviewUserIds = (req, res, next) => {
-  if (!req.body.product) req.body.product = req.params.productId;
-  if (!req.body.user) req.body.user = req.user.id;
-  next();
-};
 //
 exports.getAllReviews = getAll(Review)
 exports.getReview = getOne(Review);
 exports.updateReview = updateOne(Review);
 exports.deleteReview = deleteOne(Review);
 
+exports.setReviewUserIds = (req, res, next) => {
+  if (!req.body.product) req.body.product = req.params.productId;
+  if (!req.body.user) req.body.user = req.user.id;
+  next();
+};
 
 exports.createReview = asyncHandler(async (req, res, next) => {
   const productId = req.body.product;
