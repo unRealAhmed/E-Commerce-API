@@ -12,12 +12,13 @@ module.exports = class Email {
   }
 
   // Send an email with specified subject and message
-  async send(subject, message) {
+  async send(subject, message, html) {
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject,
       text: message,
+      html
     };
 
     // Emit the 'sendEmail' event with mailOptions
@@ -31,9 +32,9 @@ module.exports = class Email {
     await this.send(subject, message);
   }
 
-  async sendPasswordResetEmail(message) {
-    const subject = "Password Reset Request for Your JobsHub Account 🛡️"
-    await this.send(subject, message);
+  async sendPasswordResetEmail(message, html) {
+    const subject = "Password Reset Request for Your E-Commerce Account 🛡️"
+    await this.send(subject, message, html);
   }
 };
 
