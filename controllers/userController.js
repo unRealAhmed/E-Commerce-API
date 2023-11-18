@@ -4,12 +4,13 @@ const AppError = require("../utilities/appErrors")
 const resourceController = require("./resourceController")
 
 ////////// Admin Access
+const docType = 'user'
 
 exports.getAllUsers = resourceController.getAll(User)
-exports.getUser = resourceController.getOne(User)
+exports.getUser = resourceController.getOne(User, docType)
 exports.createUser = resourceController.createOne(User)
-exports.updateUser = resourceController.updateOne(User)
-exports.deleteUser = resourceController.deleteOne(User)
+exports.updateUser = resourceController.updateOne(User, docType)
+exports.deleteUser = resourceController.deleteOne(User, docType)
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};

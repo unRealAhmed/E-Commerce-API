@@ -10,7 +10,7 @@ const fakeStripeAPI = async ({ amount }) => {
 };
 
 exports.getAllOrders = getAll(Order)
-exports.getOrder = getOne(Order)
+exports.getOrder = getOne(Order, 'order')
 
 // Separate function to fetch products and calculate total
 const processOrderItems = async (cartItems, tax, shippingFee) => {

@@ -7,10 +7,13 @@ const Product = require('../models/productModel');
 const Review = require('../models/reviewModel');
 
 // Resource Controllers
+
+const docType = 'product'
+
 exports.getAllProducts = resourceController.getAll(Product);
-exports.getProduct = resourceController.getOne(Product);
 exports.createProduct = resourceController.createOne(Product);
-exports.updateProduct = resourceController.updateOne(Product);
+exports.getProduct = resourceController.getOne(Product, docType);
+exports.updateProduct = resourceController.updateOne(Product, docType);
 
 exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const productId = req.params.id;

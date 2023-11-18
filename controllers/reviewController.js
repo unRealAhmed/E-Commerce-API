@@ -4,10 +4,13 @@ const asyncHandler = require("../utilities/asyncHandler");
 const AppError = require("../utilities/appErrors");
 
 //
+
+const docType = 'review'
+
 exports.getAllReviews = getAll(Review)
-exports.getReview = getOne(Review);
-exports.updateReview = updateOne(Review);
-exports.deleteReview = deleteOne(Review);
+exports.getReview = getOne(Review, docType);
+exports.updateReview = updateOne(Review, docType);
+exports.deleteReview = deleteOne(Review, docType);
 
 exports.setReviewUserIds = (req, res, next) => {
   if (!req.body.product) req.body.product = req.params.productId;
