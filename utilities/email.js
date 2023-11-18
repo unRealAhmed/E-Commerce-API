@@ -17,7 +17,7 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject,
-      text: message,
+      text: message || '',
       html
     };
 
@@ -32,8 +32,9 @@ module.exports = class Email {
     await this.send(subject, message);
   }
 
-  async sendPasswordResetEmail(message, html) {
+  async sendPasswordResetEmail(html) {
     const subject = "Password Reset Request for Your E-Commerce Account 🛡️"
+    const message = 'hi'
     await this.send(subject, message, html);
   }
 };
