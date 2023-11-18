@@ -25,11 +25,10 @@ module.exports = class Email {
     emailEventEmitter.emit('sendEmail', mailOptions);
   }
 
-  async sendWelcomeEmail() {
+  async sendWelcomeEmail(html) {
     const subject = 'Welcome To E-Commerce Family 🚀';
-    const message = `Welcome, ${this.firstName}! 🎉 We're thrilled to have you as part of our E-Commerce community. Get ready to discover exciting products, exclusive offers, and a delightful shopping experience. Let's make your shopping journey a success together! 🌟`;
-
-    await this.send(subject, message);
+    const message = "hi"
+    await this.send(subject, message, html);
   }
 
   async sendPasswordResetEmail(html) {

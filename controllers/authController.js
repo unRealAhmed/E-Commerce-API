@@ -1,13 +1,13 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-
 const asyncHandler = require('../utilities/asyncHandler');
 const User = require('../models/userModel');
 const createToken = require('../utilities/createToken');
 const AppError = require('../utilities/appErrors');
 const Email = require('../utilities/email');
 const { resetHtmlTemplate } = require('../utilities/resetPasswordTemplate')
+const { signupHtmlTemplate } = require('../utilities/signupTemplate')
 
 // Helper function to send JWT token as a response
 const sendTokenResponse = (res, user, statusCode) => {
@@ -38,12 +38,12 @@ exports.signup = asyncHandler(async (req, res, next) => {
   });
 
   newUser.password = undefined;
-
+  const html = signupHtmlTemplate(newUser.name)
   const url = `${req.protocol}://${req.get('host')}/me`;
   const welcomeEmail = new Email(newUser, url);
 
   // Send welcome email asynchronously
-  welcomeEmail.sendWelcomeEmail()
+  welcomeEmail.sendWelcomeEmail(html)
     .then(() => {
       sendTokenResponse(res, newUser, 201);
     })
