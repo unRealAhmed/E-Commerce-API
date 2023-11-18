@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { default: validator } = require("validator");
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -42,6 +43,9 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false, // Hide active field from query results
   },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 });
 
 // COMPARING PASSWORDS
