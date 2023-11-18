@@ -77,6 +77,12 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
   }
 };
 
+reviewSchema.post('save', function () {
+  // Calculate and update ratings when a review is saved
+  this.constructor.calcAverageRatings(this.product);
+});
+
+
 // Middleware executed before finding and updating a review, stores original review
 reviewSchema.pre(/^findOneAnd/, async function (next) {
   this.originalReview = await this.model.findOne(this.getQuery()); // retrieve the current review
