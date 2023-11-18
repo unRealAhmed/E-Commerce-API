@@ -47,7 +47,7 @@ app.use(express.json({ limit: '100kb' }));
 // Serve static files
 app.use(express.static('./public'));
 
-// Define routes for jobs and users, protecting job routes with authentication
+//routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/reviews', reviewRouter);
