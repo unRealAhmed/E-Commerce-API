@@ -27,7 +27,7 @@ exports.getAll = (Model) =>
   });
 
 // This factory function generates a middleware for handling generic "get one" requests for any resource
-exports.getOne = (Model) =>
+exports.getOne = (Model, docType) =>
   asyncHandler(async (req, res, next) => {
 
     const query = Model.findById(req.params.id);
@@ -37,7 +37,7 @@ exports.getOne = (Model) =>
 
     // Handle the case when no document is found with the provided ID.
     if (!doc) {
-      return next(new AppError('No document found with that ID', 404));
+      return next(new AppError(`No ${docType} found with that ID`, 404));
     }
 
     // Send the retrieved document as a response.
@@ -66,7 +66,7 @@ exports.createOne = Model =>
   });
 
 // This factory function generates a middleware for handling generic "update one" requests for any resource
-exports.updateOne = Model =>
+exports.updateOne = (Model, docType) =>
   asyncHandler(async (req, res, next) => {
     // 1. Find and update the document
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
@@ -76,7 +76,7 @@ exports.updateOne = Model =>
 
     // 2. Handle the case when no document is found
     if (!doc) {
-      return next(new AppError('No document found with that ID', 404));
+      return next(new AppError(`No ${docType} found with that ID`, 404));
     }
 
     // 3. Send a success response with the updated data
@@ -89,14 +89,14 @@ exports.updateOne = Model =>
   });
 
 // This factory function generates a middleware for handling generic "delete one" requests for any resource
-exports.deleteOne = Model =>
+exports.deleteOne = (Model, docType) =>
   asyncHandler(async (req, res, next) => {
     // 1. Find and delete a document by its ID
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     // 2. If no document is found, handle it as an error
     if (!doc) {
-      return next(new AppError('No document found with that ID', 404));
+      return next(new AppError(`No ${docType} found with that ID`, 404));
     }
 
     // 3. Send a success response with no data (204 status code)
